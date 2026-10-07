@@ -1,78 +1,87 @@
+import { MdArrowOutward } from "react-icons/md";
 import "./styles/Work.css";
-import WorkImage from "./WorkImage";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+const games = [
+  {
+    index: "01",
+    title: "POLY SNAKE 2.0",
+    type: "MOBILE · ARCADE",
+    engine: "UNITY 6",
+    accent: "snake",
+    description: "A polished arcade snake experience built around multiple game modes, time pressure, progression and a player-focused shop.",
+    tags: ["C#", "GAMEPLAY", "UI", "ANDROID"],
+  },
+  {
+    index: "02",
+    title: "BRUSHING GAME",
+    type: "MOBILE · EDUCATIONAL",
+    engine: "UNITY 6",
+    accent: "brush",
+    description: "A guided brushing experience designed for children, with a 100-second routine, XP, streaks and offline progression.",
+    tags: ["2D", "URP", "UX", "OFFLINE"],
+  },
+  {
+    index: "03",
+    title: "SHADOW WARS",
+    type: "MOBILE · ACTION",
+    engine: "UNITY",
+    accent: "shadow",
+    description: "Gameplay-focused action work centred on responsive player interactions, combat systems and moment-to-moment feel.",
+    tags: ["C#", "COMBAT", "GAMEPLAY"],
+  },
+  {
+    index: "04",
+    title: "NIGHT RUSHER",
+    type: "MOBILE · ARCADE",
+    engine: "UNITY",
+    accent: "night",
+    description: "A fast-paced mobile game project with emphasis on replayability, progression and clean gameplay feedback.",
+    tags: ["C#", "MOBILE", "SYSTEMS"],
+  },
+];
 
 const Work = () => {
-  useGSAP(() => {
-  let translateX: number = 0;
-
-  function setTranslateX() {
-    const box = document.getElementsByClassName("work-box");
-    const rectLeft = document
-      .querySelector(".work-container")!
-      .getBoundingClientRect().left;
-    const rect = box[0].getBoundingClientRect();
-    const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-    let padding: number =
-      parseInt(window.getComputedStyle(box[0]).padding) / 2;
-    translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-  }
-
-  setTranslateX();
-
-  let timeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".work-section",
-      start: "top top",
-      end: `+=${translateX}`, // Use actual scroll width
-      scrub: true,
-      pin: true,
-      id: "work",
-    },
-  });
-
-  timeline.to(".work-flex", {
-    x: -translateX,
-    ease: "none",
-  });
-
-  // Clean up (optional, good practice)
-  return () => {
-    timeline.kill();
-    ScrollTrigger.getById("work")?.kill();
-  };
-}, []);
   return (
-    <div className="work-section" id="work">
-      <div className="work-container section-container">
-        <h2>
-          My <span>Work</span>
-        </h2>
-        <div className="work-flex">
-          {[...Array(6)].map((_value, index) => (
-            <div className="work-box" key={index}>
-              <div className="work-info">
-                <div className="work-title">
-                  <h3>0{index + 1}</h3>
+    <section className="work-section" id="work">
+      <div className="work-container">
+        <div className="section-intro work-intro">
+          <span className="section-number">01 / SELECTED WORK</span>
+          <h2>GAMES<br /><em>I'VE BUILT.</em></h2>
+          <p>Selected projects that represent how I approach gameplay, systems and player experience.</p>
+        </div>
 
-                  <div>
-                    <h4>Project Name</h4>
-                    <p>Category</p>
-                  </div>
-                </div>
-                <h4>Tools and features</h4>
-                <p>Javascript, TypeScript, React, Threejs</p>
+        <div className="work-grid">
+          {games.map((game, index) => (
+            <article className={`game-card game-card-${game.accent}`} key={game.title}>
+              <div className="game-art">
+                <div className="game-art-grid" />
+                <div className="game-art-shape" />
+                <span className="game-index">{game.index}</span>
+                <span className="game-engine">{game.engine}</span>
+                <div className="game-art-title">{game.title}</div>
               </div>
-              <WorkImage image="/images/placeholder.webp" alt="" />
-            </div>
+
+              <div className="game-info">
+                <div>
+                  <p className="game-type">{game.type}</p>
+                  <h3>{game.title}</h3>
+                </div>
+                <span className="game-arrow"><MdArrowOutward /></span>
+                <p className="game-description">{game.description}</p>
+                <div className="game-tags">
+                  {game.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+              </div>
+            </article>
           ))}
         </div>
+
+        <div className="work-footer">
+          <span>MORE PROJECTS IN DEVELOPMENT</span>
+          <span>04 / 04</span>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
