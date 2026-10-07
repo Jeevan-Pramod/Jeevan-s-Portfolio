@@ -1,80 +1,41 @@
-import { useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HoverLinks from "./HoverLinks";
-import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
+import { useEffect, useState } from "react";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
-
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+  const [solid, setSolid] = useState(false);
+
   useEffect(() => {
-    smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
-      effects: true,
-      autoResize: true,
-      ignoreMobileResize: true,
-    });
-
-    smoother.scrollTop(0);
-    smoother.paused(true);
-
-    let links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
-        }
-      });
-    });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+    const onScroll = () => setSolid(window.scrollY > 70);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  return (
-    <>
-      <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
-        </a>
-        <a
-          href="mailto:example@mail.com"
-          className="navbar-connect"
-          data-cursor="disable"
-        >
-          example@mail.com
-        </a>
-        <ul>
-          <li>
-            <a data-href="#about" href="#about">
-              <HoverLinks text="ABOUT" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#work" href="#work">
-              <HoverLinks text="WORK" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#contact" href="#contact">
-              <HoverLinks text="CONTACT" />
-            </a>
-          </li>
-        </ul>
-      </div>
 
-      <div className="landing-circle1"></div>
-      <div className="landing-circle2"></div>
-      <div className="nav-fade"></div>
-    </>
+  const close = () => setOpen(false);
+
+  return (
+    <header className={`header ${solid ? "header-solid" : ""}`}>
+      <a href="#landing" className="navbar-title" data-cursor="disable" onClick={close}>
+        JP<span>.</span>
+      </a>
+
+      <button className={`navbar-menu-button ${open ? "is-open" : ""}`} onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Toggle navigation">
+        <span />
+        <span />
+      </button>
+
+      <nav className={`navbar-nav ${open ? "nav-open" : ""}`}>
+        <a href="#work" onClick={close}>GAMES</a>
+        <a href="#about" onClick={close}>ABOUT</a>
+        <a href="#experience" onClick={close}>EXPERIENCE</a>
+        <a href="#contact" onClick={close}>CONTACT</a>
+      </nav>
+
+      <a href="/resume.pdf" target="_blank" rel="noreferrer" className="navbar-resume" data-cursor="disable">
+        RESUME ↗
+      </a>
+    </header>
   );
 };
 
