@@ -20,7 +20,7 @@ const Navbar = () => {
         JP<span>.</span>
       </a>
 
-      <button className={`navbar-menu-button ${open ? "is-open" : ""}`} onClick={() => setOpen(!open)} aria-expanded={open}>
+      <button className={`navbar-menu-button ${open ? "is-open" : ""}`} onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Toggle navigation">
         <span />
         <span />
       </button>
