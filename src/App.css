@@ -3,7 +3,6 @@
   margin-left: auto;
   margin-right: auto;
 }
-
 .section-number {
   display: inline-flex;
   align-items: center;
@@ -13,14 +12,12 @@
   text-transform: uppercase;
   color: rgba(255,255,255,.48);
 }
-
 .section-number::before {
   content: "";
   width: 28px;
   height: 1px;
   background: var(--accentColor);
 }
-
 @media (max-width: 900px) {
   .section-container { width: min(100% - 36px, 680px); }
 }
